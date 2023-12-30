@@ -34,11 +34,11 @@ export class RoomService {
     return room;
   }
 
-  async readContent() {
+  async readContent(cid: string) {
     const address = '/Users/Jouni/PhotoRoom/room';
 
     // JPG
-    const CID = 'bafkreig6w4bromttln6hqnw3f3kqfhm7pcfbbtsgezaxvh7a2ipqbelrxy';
+    // const CID = 'bafkreig6w4bromttln6hqnw3f3kqfhm7pcfbbtsgezaxvh7a2ipqbelrxy';
 
     // PDF
     // const CID = 'bafkreiffnhnovdvo7o5bm4n2bvh3dax2wjlvlja3axhakakvvjfmoqxbhq';
@@ -50,7 +50,7 @@ export class RoomService {
 
     const room = await this.initiateRoom(roomClientType, address);
     await room.loadRoom({ LocalClient: LocalClient, S3Client: S3Client });
-    const response = await room.readContent(CID);
+    const response = await room.readContent(cid);
     return response;
   }
 }
