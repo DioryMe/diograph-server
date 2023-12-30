@@ -35,15 +35,22 @@ export class RoomService {
   }
 
   async readContent() {
-    const address =
-      process.argv[2] || '/Users/Jouni/Code/diograph-cli/tmp/room';
-    const roomClientType = process.argv[3] || 'LocalClient';
+    const address = '/Users/Jouni/PhotoRoom/room';
+
+    // JPG
+    const CID = 'bafkreig6w4bromttln6hqnw3f3kqfhm7pcfbbtsgezaxvh7a2ipqbelrxy';
+
+    // PDF
+    // const CID = 'bafkreiffnhnovdvo7o5bm4n2bvh3dax2wjlvlja3axhakakvvjfmoqxbhq';
+
+    // const address = '/Users/Jouni/Code/diograph-cli/tmp/room';
+    // const CID = 'bafkreihoednm4s2g4vpame3mweewfq5of3hks2mbmkvoksxg3z4rhmweeu';
+
+    const roomClientType = 'LocalClient';
 
     const room = await this.initiateRoom(roomClientType, address);
     await room.loadRoom({ LocalClient: LocalClient, S3Client: S3Client });
-    const response = await room.readContent(
-      'bafkreihoednm4s2g4vpame3mweewfq5of3hks2mbmkvoksxg3z4rhmweeu',
-    );
+    const response = await room.readContent(CID);
     return response;
   }
 }
