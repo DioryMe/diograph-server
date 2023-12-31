@@ -28,3 +28,9 @@ Basic with another CID
     ${resp}=    GET    ${ROOT}/    params=cid=bafkreiffnhnovdvo7o5bm4n2bvh3dax2wjlvlja3axhakakvvjfmoqxbhq&mime=application/pdf
     Status Should Be    200  ${resp}
     Dictionary Should Contain Value    ${resp.headers}  application/pdf
+
+# SKIPPED: Slow and costly
+# S3
+#     ${resp}=    GET    ${ROOT}/s3    params=cid=bafkreihoednm4s2g4vpame3mweewfq5of3hks2mbmkvoksxg3z4rhmweeu&mime=image/jpeg
+#     Status Should Be    200  ${resp}
+#     Dictionary Should Contain Value    ${resp.headers}  image/jpeg

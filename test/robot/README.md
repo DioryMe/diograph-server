@@ -14,3 +14,5 @@ pip install robotframework-browser
 ```
 robot main.robot
 ```
+
+NOTE: S3 test needs server to be started with `aws-vault exec [username] -- yarn start:dev`
