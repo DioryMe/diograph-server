@@ -43,6 +43,6 @@ export class AppController {
 
     const response = await this.roomService.readContentFromS3(cid);
 
-    res.status(200).header('Content-Type', mime).send(response);
+    res.status(200).header('Content-Type', mime).send(Buffer.from(response));
   }
 }
