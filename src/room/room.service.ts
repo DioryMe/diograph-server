@@ -63,4 +63,20 @@ export class RoomService {
 
     return response;
   }
+
+  async getThumbnail(dioryId: string) {
+    const address = '/tmp';
+    const roomClientType = 'LocalClient';
+
+    const room = await this.initiateRoom(roomClientType, address);
+
+    await room.loadRoom({
+      LocalClient: { clientConstructor: LocalClient },
+      S3Client: { clientConstructor: S3Client },
+    });
+
+    const response = await room.diograph.getDiory({ id: dioryId });
+
+    return response.image;
+  }
 }
