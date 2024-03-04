@@ -1,4 +1,5 @@
-import { ConnectionClient, Room, RoomClient } from '@diograph/diograph';
+import { Room, RoomClient } from '@diograph/diograph';
+import { ConnectionClient } from '@diograph/diograph/types';
 import { LocalClient } from '@diograph/local-client';
 import { S3Client } from '@diograph/s3-client';
 import { Injectable } from '@nestjs/common';
