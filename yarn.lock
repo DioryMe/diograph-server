@@ -967,7 +967,7 @@
     path-browserify "^1.0.1"
     uuid "8.3.2"
 
-"@diograph/diograph@next":
+"@diograph/diograph@^0.2.2-rc3", "@diograph/diograph@next":
   version "0.2.2-rc3"
   resolved "https://registry.yarnpkg.com/@diograph/diograph/-/diograph-0.2.2-rc3.tgz#5f8fe56d615e93366fade3253c388635290ea56a"
   integrity sha512-8wbGnDQqsNhb23Xu72I3A8ij1edyiphapAa1q+xuUgqmpOHcN29WSyqh557cW3LCmSPtMvNCaDHFMTOmp+QeOw==
@@ -992,6 +992,13 @@
   dependencies:
     "@aws-sdk/client-s3" "^3.209.0"
     "@diograph/diograph" next
+
+"@diograph/utils@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@diograph/utils/-/utils-0.0.1.tgz#afeeee51498a4b253bc42496b0881d7805ac8910"
+  integrity sha512-CxTV5O3FC24Im6UHNDiR1mUHakPfTBHhBTNCY6xcf/MrMkkTHQhEJgcU4PIblbDTjx2YrX4oFymJTg4kt5GZPg==
+  dependencies:
+    "@diograph/diograph" "^0.2.2-rc3"
 
 "@eslint-community/eslint-utils@^4.2.0", "@eslint-community/eslint-utils@^4.4.0":
   version "4.4.0"
@@ -6017,6 +6024,7 @@ which@^2.0.1:
     isexe "^2.0.0"
 
 "wrap-ansi-cjs@npm:wrap-ansi@^7.0.0", wrap-ansi@^7.0.0:
+  name wrap-ansi-cjs
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
   integrity sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==
