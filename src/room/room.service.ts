@@ -19,7 +19,7 @@ const availableClients = {
 @Injectable()
 export class RoomService {
   async readContent(cid: string) {
-    const address = '/Users/Jouni/PhotoRoom/room';
+    const address = '/tmp/demo-content-room/456';
     const roomClientType = 'LocalClient';
 
     const room = await constructAndLoadRoom(
@@ -48,7 +48,7 @@ export class RoomService {
   }
 
   async getThumbnail(dioryId: string) {
-    const address = '/tmp';
+    const address = '/tmp/demo-content-room/123';
     const roomClientType = 'LocalClient';
 
     const room = await constructAndLoadRoom(
