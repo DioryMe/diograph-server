@@ -6,8 +6,8 @@ import { Injectable } from '@nestjs/common';
 const credentials = {
   region: 'eu-west-1',
   credentials: {
-    accessKeyId: '',
-    secretAccessKey: '',
+    accessKeyId: process.env.DCLI_S3_CLIENT_ACCESS_KEY_ID,
+    secretAccessKey: process.env.DCLI_S3_CLIENT_SECRET_ACCESS_KEY,
   },
 };
 
