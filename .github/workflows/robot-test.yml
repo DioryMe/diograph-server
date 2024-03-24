@@ -9,14 +9,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # TODO: Remove hardcoded demo-content-room with a real one
+      # TODO: Remove hardcoded demo-content with a real one
       - name: Prepare /tmp room
-        run: mkdir -p /tmp && cp -r test/demo-content-room /tmp
-      # - name: Checkout demo-content-room
+        run: mkdir -p /tmp && cp -r test/demo-content /tmp
+      # - name: Checkout demo-content-room repo
       #   uses: actions/checkout@v4
       #   with:
-      #     path: 'tests/demo-content-room'
-      #     repository: 'DioryMe/demo-content-room'
+      #     path: 'tests/demo-content'
+      #     repository: 'DioryMe/demo-content'
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -40,6 +40,7 @@ jobs:
       - name: Start server
         run: yarn start:dev & sleep 2
         env:
+          ROOM_PATH: ${{ vars.ROOM_PATH }}
           BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
           BUCKET_ACCESS_KEY: ${{ secrets.BUCKET_ACCESS_KEY }}
           BUCKET_SECRET_KEY: ${{ secrets.BUCKET_SECRET_KEY }}

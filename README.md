@@ -3,13 +3,13 @@
 ## Run
 
 ```
-yarn start:dev
+ROOM_PATH=/tmp/room yarn start:dev
 ```
 
-For S3 rooms:
+For S3 rooms or tests:
 
 ```
-DCLI_S3_CLIENT_ACCESS_KEY_ID=****** DCLI_S3_CLIENT_SECRET_ACCESS_KEY=****** yarn start:dev
+ROOM_PATH=/tmp/room BUCKET_NAME=****** BUCKET_ACCESS_KEY=****** BUCKET_SECRET_KEY=****** yarn start:dev
 ```
 
 ## Usage
