@@ -19,7 +19,12 @@ const availableClients = {
 @Injectable()
 export class RoomService {
   async readContent(cid: string) {
-    const address = '/tmp/demo-content-room/456';
+    // TODO: Enable providing ROOM_PATH as part of the url
+    if (!process.env.ROOM_PATH) {
+      throw new Error(`Can't use /content endpoint if ROOM_PATH not defined!`);
+    }
+
+    const address = process.env.ROOM_PATH;
     const roomClientType = 'LocalClient';
 
     const room = await constructAndLoadRoom(
@@ -55,7 +60,12 @@ export class RoomService {
   }
 
   async getThumbnail(dioryId: string) {
-    const address = '/tmp/demo-content-room/123';
+    // TODO: Enable providing ROOM_PATH as part of the url
+    if (!process.env.ROOM_PATH) {
+      throw new Error(`Can't use /content endpoint if ROOM_PATH not defined!`);
+    }
+
+    const address = process.env.ROOM_PATH;
     const roomClientType = 'LocalClient';
 
     const room = await constructAndLoadRoom(
