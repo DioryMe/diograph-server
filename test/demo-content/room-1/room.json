@@ -1,7 +1,7 @@
 {
   "connections": [
     {
-      "address": "/Users/Jouni/PhotoRoom/room/Diory Content",
+      "address": "/tmp/demo-content/room-1/Diory Content",
       "contentClientType": "LocalClient",
       "contentUrls": {
         "bafkreig6w4bromttln6hqnw3f3kqfhm7pcfbbtsgezaxvh7a2ipqbelrxy": "/bafkreig6w4bromttln6hqnw3f3kqfhm7pcfbbtsgezaxvh7a2ipqbelrxy",
@@ -28,7 +28,7 @@
       }
     },
     {
-      "address": "/Users/Jouni/PhotoRoom/MyPictures",
+      "address": "/tmp/demo-content/my-photos",
       "contentClientType": "LocalClient",
       "contentUrls": {
         "bafkreihoednm4s2g4vpame3mweewfq5of3hks2mbmkvoksxg3z4rhmweeu": "/my-pic.jpg",
