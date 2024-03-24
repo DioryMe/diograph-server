@@ -6,8 +6,8 @@ import { Injectable } from '@nestjs/common';
 const credentials = {
   region: 'eu-west-1',
   credentials: {
-    accessKeyId: '',
-    secretAccessKey: '',
+    accessKeyId: process.env.BUCKET_ACCESS_KEY,
+    secretAccessKey: process.env.BUCKET_SECRET_KEY,
   },
 };
 
@@ -19,7 +19,12 @@ const availableClients = {
 @Injectable()
 export class RoomService {
   async readContent(cid: string) {
-    const address = '/Users/Jouni/PhotoRoom/room';
+    // TODO: Enable providing ROOM_PATH as part of the url
+    if (!process.env.ROOM_PATH) {
+      throw new Error(`Can't use /content endpoint if ROOM_PATH not defined!`);
+    }
+
+    const address = process.env.ROOM_PATH;
     const roomClientType = 'LocalClient';
 
     const room = await constructAndLoadRoom(
@@ -33,7 +38,14 @@ export class RoomService {
   }
 
   async readContentFromS3(cid: string) {
-    const address = 's3://jvalanen-diory-test3/room';
+    // TODO: Enable providing BUCKET_NAME as part of the url
+    if (!process.env.BUCKET_NAME) {
+      throw new Error(`Can't use /s3 endpoint if BUCKET_NAME not defined!`);
+    }
+
+    const bucketAddress = `s3://${process.env.BUCKET_NAME}`;
+    const s3Address = `${bucketAddress}/room`;
+    const address = s3Address;
     const roomClientType = 'S3Client';
 
     const room = await constructAndLoadRoom(
@@ -48,7 +60,12 @@ export class RoomService {
   }
 
   async getThumbnail(dioryId: string) {
-    const address = '/tmp';
+    // TODO: Enable providing ROOM_PATH as part of the url
+    if (!process.env.ROOM_PATH) {
+      throw new Error(`Can't use /content endpoint if ROOM_PATH not defined!`);
+    }
+
+    const address = process.env.ROOM_PATH;
     const roomClientType = 'LocalClient';
 
     const room = await constructAndLoadRoom(

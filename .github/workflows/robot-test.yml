@@ -1,0 +1,59 @@
+name: Robot test
+
+on: [push]
+
+jobs:
+  robot_framework_tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # TODO: Remove hardcoded demo-content with a real one
+      - name: Prepare /tmp room
+        run: mkdir -p /tmp && cp -r test/demo-content /tmp
+      # - name: Checkout demo-content-room repo
+      #   uses: actions/checkout@v4
+      #   with:
+      #     path: 'tests/demo-content'
+      #     repository: 'DioryMe/demo-content'
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Robot Framework dependencies
+        run: pip install robotframework robotframework-requests robotframework-browser && rfbrowser init
+
+      - name: Verify Python installation
+        run: echo $(robot --version)
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Install & build
+        run: yarn && yarn build
+
+      - name: Start server
+        run: yarn start:dev & sleep 2
+        env:
+          ROOM_PATH: ${{ vars.ROOM_PATH }}
+          BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
+          BUCKET_ACCESS_KEY: ${{ secrets.BUCKET_ACCESS_KEY }}
+          BUCKET_SECRET_KEY: ${{ secrets.BUCKET_SECRET_KEY }}
+
+      - name: Run Robot Framework tests
+        run: robot test/main.robot
+
+      - name: Upload test artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: robot-framework-outputs
+          path: |
+            /home/runner/work/diograph-server/diograph-server/output.xml
+            /home/runner/work/diograph-server/diograph-server/log.html
+            /home/runner/work/diograph-server/diograph-server/report.html

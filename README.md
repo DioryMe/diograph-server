@@ -3,13 +3,13 @@
 ## Run
 
 ```
-yarn start:dev
+ROOM_PATH=/tmp/room yarn start:dev
 ```
 
-OR
+For S3 rooms or tests:
 
 ```
-aws-vault exec [username] -- yarn start:dev
+ROOM_PATH=/tmp/room BUCKET_NAME=****** BUCKET_ACCESS_KEY=****** BUCKET_SECRET_KEY=****** yarn start:dev
 ```
 
 ## Usage
@@ -22,4 +22,4 @@ http://localhost:3000/thumbnail?dioryId=[dioryId]
 
 ## Tests
 
-See `tests/robot/README.md`
+See `tests/README.md`

@@ -23,7 +23,7 @@
     "@diograph/diograph": "next",
     "@diograph/local-client": "next",
     "@diograph/s3-client": "next",
-    "@diograph/utils": "^0.0.1",
+    "@diograph/utils": "next",
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
