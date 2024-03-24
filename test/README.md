@@ -7,6 +7,7 @@
 ```
 pip install robotframework-requests
 pip install robotframework-browser
+rfbrowser init
 ```
 
 3. Start server
@@ -14,7 +15,7 @@ pip install robotframework-browser
 S3 test needs server to be started with access key & secret as envs:
 
 ```
-DCLI_S3_CLIENT_ACCESS_KEY_ID=****** DCLI_S3_CLIENT_SECRET_ACCESS_KEY=****** yarn start:dev
+ROOM_PATH=./test/demo-content/room-1 BUCKET_NAME=****** BUCKET_ACCESS_KEY=****** BUCKET_SECRET_KEY=****** yarn start:dev
 ```
 
 4. Run tests
