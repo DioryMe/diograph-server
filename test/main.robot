@@ -32,10 +32,10 @@ Error without mime
 #     Status Should Be    200  ${resp}
 #     Dictionary Should Contain Value    ${resp.headers}  application/pdf
 
-# S3
-#     ${resp}=    GET    ${ROOT}/s3    params=cid=bafkreihvgvtqocownctpbskgrwsdtr3l6z3yp4w2rirs32ny2u7epz7ona&mime=image/jpeg
-#     Status Should Be    200  ${resp}
-#     Dictionary Should Contain Value    ${resp.headers}  image/jpeg
+S3
+    ${resp}=    GET    ${ROOT}/s3    params=cid=bafkreihvgvtqocownctpbskgrwsdtr3l6z3yp4w2rirs32ny2u7epz7ona&mime=image/jpeg
+    Status Should Be    200  ${resp}
+    Dictionary Should Contain Value    ${resp.headers}  image/jpeg
 
 Thumbnail
     ${resp}=    GET    ${ROOT}/thumbnail/    params=dioryId=bafkreihvgvtqocownctpbskgrwsdtr3l6z3yp4w2rirs32ny2u7epz7ona

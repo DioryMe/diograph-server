@@ -6,8 +6,8 @@ import { Injectable } from '@nestjs/common';
 const credentials = {
   region: 'eu-west-1',
   credentials: {
-    accessKeyId: process.env.DCLI_S3_CLIENT_ACCESS_KEY_ID,
-    secretAccessKey: process.env.DCLI_S3_CLIENT_SECRET_ACCESS_KEY,
+    accessKeyId: process.env.BUCKET_ACCESS_KEY,
+    secretAccessKey: process.env.BUCKET_SECRET_KEY,
   },
 };
 
@@ -33,7 +33,14 @@ export class RoomService {
   }
 
   async readContentFromS3(cid: string) {
-    const address = 's3://jvalanen-diory-test3/room';
+    // TODO: Enable providing BUCKET_NAME as part of the url
+    if (!process.env.BUCKET_NAME) {
+      throw new Error(`Can't use /s3 endpoint if BUCKET_NAME not defined!`);
+    }
+
+    const bucketAddress = `s3://${process.env.BUCKET_NAME}`;
+    const s3Address = `${bucketAddress}/room`;
+    const address = s3Address;
     const roomClientType = 'S3Client';
 
     const room = await constructAndLoadRoom(

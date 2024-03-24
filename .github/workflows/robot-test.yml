@@ -38,7 +38,11 @@ jobs:
         run: yarn && yarn build
 
       - name: Start server
-        run: DCLI_S3_CLIENT_ACCESS_KEY_ID=****** DCLI_S3_CLIENT_SECRET_ACCESS_KEY=****** yarn start:dev & sleep 2
+        run: yarn start:dev & sleep 2
+        env:
+          BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
+          BUCKET_ACCESS_KEY: ${{ secrets.BUCKET_ACCESS_KEY }}
+          BUCKET_SECRET_KEY: ${{ secrets.BUCKET_SECRET_KEY }}
 
       - name: Run Robot Framework tests
         run: robot test/main.robot
