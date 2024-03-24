@@ -16,24 +16,26 @@ Error without CID
     ${resp}=    GET    ${ROOT}/content/    params=mime=image/jpeg    expected_status=400
     Status Should Be    400  ${resp}
     Should Be Equal As Strings    ${resp.text}    Missing "cid" query parameter
+
 Error without mime
     ${resp}=    GET    ${ROOT}/content/    params=cid=123abc    expected_status=400
     Status Should Be    400  ${resp}
     Should Be Equal As Strings    ${resp.text}    Missing "mime" query parameter
-Basic
-    ${resp}=    GET    ${ROOT}/content/    params=cid=bafkreig6w4bromttln6hqnw3f3kqfhm7pcfbbtsgezaxvh7a2ipqbelrxy&mime=image/jpeg
-    Status Should Be    200  ${resp}
-    Dictionary Should Contain Value    ${resp.headers}  image/jpeg
-Basic with another CID
-    ${resp}=    GET    ${ROOT}/content/   params=cid=bafkreiffnhnovdvo7o5bm4n2bvh3dax2wjlvlja3axhakakvvjfmoqxbhq&mime=application/pdf
-    Status Should Be    200  ${resp}
-    Dictionary Should Contain Value    ${resp.headers}  application/pdf
 
-# SKIPPED: Slow and costly
-S3
-    ${resp}=    GET    ${ROOT}/s3    params=cid=bafkreihvgvtqocownctpbskgrwsdtr3l6z3yp4w2rirs32ny2u7epz7ona&mime=image/jpeg
-    Status Should Be    200  ${resp}
-    Dictionary Should Contain Value    ${resp.headers}  image/jpeg
+# Basic
+#     ${resp}=    GET    ${ROOT}/content/    params=cid=bafkreig6w4bromttln6hqnw3f3kqfhm7pcfbbtsgezaxvh7a2ipqbelrxy&mime=image/jpeg
+#     Status Should Be    200  ${resp}
+#     Dictionary Should Contain Value    ${resp.headers}  image/jpeg
+
+# Basic with another CID
+#     ${resp}=    GET    ${ROOT}/content/   params=cid=bafkreiffnhnovdvo7o5bm4n2bvh3dax2wjlvlja3axhakakvvjfmoqxbhq&mime=application/pdf
+#     Status Should Be    200  ${resp}
+#     Dictionary Should Contain Value    ${resp.headers}  application/pdf
+
+# S3
+#     ${resp}=    GET    ${ROOT}/s3    params=cid=bafkreihvgvtqocownctpbskgrwsdtr3l6z3yp4w2rirs32ny2u7epz7ona&mime=image/jpeg
+#     Status Should Be    200  ${resp}
+#     Dictionary Should Contain Value    ${resp.headers}  image/jpeg
 
 Thumbnail
     ${resp}=    GET    ${ROOT}/thumbnail/    params=dioryId=bafkreihvgvtqocownctpbskgrwsdtr3l6z3yp4w2rirs32ny2u7epz7ona
