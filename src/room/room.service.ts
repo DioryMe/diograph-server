@@ -63,11 +63,17 @@ export class RoomService {
   }
 
   async getThumbnail(dioryId: string) {
-    const rooms = await this.configClient.getRooms();
+    // TODO: Where the roomId comes from?
+    // => somehow from the url?
+    // => /thumbnail/:roomId/:dioryId
+    const roomId = 'room-2';
+
+    const { address, clientType } =
+      await this.configClient.getRoomConfig(roomId);
 
     const room = await constructAndLoadRoom(
-      rooms[0].address,
-      rooms[0].roomClientType,
+      address,
+      clientType,
       availableClients,
     );
 

@@ -4,21 +4,30 @@ import { AppModule } from './app.module';
 
 interface RoomConfig {
   address: string;
-  roomClientType: 'LocalClient' | 'S3Client';
+  clientType: 'LocalClient' | 'S3Client';
 }
 
 interface ConfigClient {
-  getRooms(): Promise<RoomConfig[]>;
+  getRoomConfig(roomId: string): Promise<RoomConfig>;
 }
 
 const configClient: ConfigClient = {
-  getRooms: async () => {
-    return [
-      {
-        address: '/tmp/demo-content/room-1',
-        roomClientType: 'LocalClient',
+  getRoomConfig: async (roomId: string) => {
+    const rooms = {
+      'room-1': {
+        address: '/tmp',
+        clientType: 'LocalClient',
       },
-    ];
+      'room-2': {
+        address: '/tmp/demo-content/room-1',
+        clientType: 'LocalClient',
+      },
+      'room-3': {
+        address: 'jvalanen-diory-test3/room',
+        clientType: 'S3Client',
+      },
+    };
+    return rooms[roomId];
   },
 };
 
