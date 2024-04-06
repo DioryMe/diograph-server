@@ -1,7 +1,8 @@
 import { LocalClient } from '@diograph/local-client';
 import { S3Client } from '@diograph/s3-client';
 import { constructAndLoadRoom } from '@diograph/utils';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { ConfigClient } from 'src/main';
 
 const credentials = {
   region: 'eu-west-1',
@@ -18,6 +19,8 @@ const availableClients = {
 
 @Injectable()
 export class RoomService {
+  constructor(@Inject('CONFIG_CLIENT') private configClient: ConfigClient) {}
+
   async readContent(cid: string) {
     // TODO: Enable providing ROOM_PATH as part of the url
     if (!process.env.ROOM_PATH) {
@@ -60,17 +63,11 @@ export class RoomService {
   }
 
   async getThumbnail(dioryId: string) {
-    // TODO: Enable providing ROOM_PATH as part of the url
-    if (!process.env.ROOM_PATH) {
-      throw new Error(`Can't use /content endpoint if ROOM_PATH not defined!`);
-    }
-
-    const address = process.env.ROOM_PATH;
-    const roomClientType = 'LocalClient';
+    const rooms = await this.configClient.getRooms();
 
     const room = await constructAndLoadRoom(
-      address,
-      roomClientType,
+      rooms[0].address,
+      rooms[0].roomClientType,
       availableClients,
     );
 
