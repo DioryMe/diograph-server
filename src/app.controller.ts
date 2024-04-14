@@ -1,4 +1,4 @@
-import { Controller, Get, HttpStatus, Query, Res } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Param, Query, Res } from '@nestjs/common';
 import { RoomService } from './room/room.service';
 import { Response } from 'express';
 
@@ -12,9 +12,10 @@ export class AppController {
     res.status(200).send(response);
   }
 
-  @Get('thumbnail')
+  @Get(':roomId/thumbnail')
   async renderThumbnail(
     @Res() res: Response,
+    @Param('roomId') roomId: string,
     @Query('dioryId') dioryId: string,
   ) {
     if (!dioryId) {
@@ -23,15 +24,16 @@ export class AppController {
         .send('Missing "dioryId" query parameter');
     }
 
-    const response = await this.roomService.getThumbnail(dioryId);
+    const response = await this.roomService.getThumbnail(roomId, dioryId);
 
     const html = `<img src="${response}">`;
     res.status(200).header('Content-Type', 'text/html').send(html);
   }
 
-  @Get('content')
+  @Get(':roomId/content')
   async getContent(
     @Res() res: Response,
+    @Param('roomId') roomId: string,
     @Query('cid') cid: string,
     @Query('mime') mime: string,
   ) {
@@ -46,7 +48,7 @@ export class AppController {
         .send('Missing "mime" query parameter');
     }
 
-    const response = await this.roomService.readContent(cid);
+    const response = await this.roomService.readContent(roomId, cid);
 
     res.status(200).header('Content-Type', mime).send(response);
   }
