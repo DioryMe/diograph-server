@@ -13,23 +13,23 @@ ${ROOT}    http://localhost:3000
 
 *** Test Cases ***
 Error without CID
-    ${resp}=    GET    ${ROOT}/content/    params=mime=image/jpeg    expected_status=400
+    ${resp}=    GET    ${ROOT}/room-1/content/    params=mime=image/jpeg    expected_status=400
     Should Be Equal As Strings    ${resp.text}    Missing "cid" query parameter
 
 Error without mime
-    ${resp}=    GET    ${ROOT}/content/    params=cid=123abc    expected_status=400
+    ${resp}=    GET    ${ROOT}/room-1/content/    params=cid=123abc    expected_status=400
     Should Be Equal As Strings    ${resp.text}    Missing "mime" query parameter
 
 Basic
-    ${resp}=    GET    ${ROOT}/content/    params=cid=bafkreig6w4bromttln6hqnw3f3kqfhm7pcfbbtsgezaxvh7a2ipqbelrxy&mime=image/jpeg
+    ${resp}=    GET    ${ROOT}/room-1/content/    params=cid=bafkreig6w4bromttln6hqnw3f3kqfhm7pcfbbtsgezaxvh7a2ipqbelrxy&mime=image/jpeg
     Dictionary Should Contain Value    ${resp.headers}  image/jpeg
 
 Basic with another CID
-    ${resp}=    GET    ${ROOT}/content/   params=cid=bafkreiffnhnovdvo7o5bm4n2bvh3dax2wjlvlja3axhakakvvjfmoqxbhq&mime=application/pdf
+    ${resp}=    GET    ${ROOT}/room-1/content/   params=cid=bafkreiffnhnovdvo7o5bm4n2bvh3dax2wjlvlja3axhakakvvjfmoqxbhq&mime=application/pdf
     Dictionary Should Contain Value    ${resp.headers}  application/pdf
 
 Error 404 when content not found
-    ${resp}=    GET    ${ROOT}/content/   params=cid=this-aint-no-cid&mime=application/pdf    expected_status=404
+    ${resp}=    GET    ${ROOT}/room-1/content/   params=cid=this-aint-no-cid&mime=application/pdf    expected_status=404
     Should Be Equal As Strings    ${resp.text}    {"statusCode":404,"message":"Content not found"}
 
 # S3
@@ -37,9 +37,9 @@ Error 404 when content not found
 #     Dictionary Should Contain Value    ${resp.headers}  image/jpeg
 
 Thumbnail
-    ${resp}=    GET    ${ROOT}/thumbnail/    params=dioryId=70caaa4d-1040-440a-a65f-e736f23f1cab
+    ${resp}=    GET    ${ROOT}/room-1/thumbnail/    params=dioryId=70caaa4d-1040-440a-a65f-e736f23f1cab
     Dictionary Should Contain Value    ${resp.headers}  text/html; charset=utf-8
 
 Error 404 when thumbnail not found
-    ${resp}=    GET    ${ROOT}/thumbnail/    params=dioryId=this-doesnt-exist    expected_status=404
+    ${resp}=    GET    ${ROOT}/room-1/thumbnail/    params=dioryId=this-doesnt-exist    expected_status=404
     Should Be Equal As Strings    ${resp.text}    {"statusCode":404,"message":"Diory not found"}
