@@ -20,6 +20,4 @@ async function bootstrap(configClient: ConfigClient) {
   await app.listen(3000);
 }
 
-bootstrap()
-
 export { bootstrap, ConfigClient, RoomConfig };
