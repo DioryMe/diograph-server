@@ -3,19 +3,21 @@ import { AllExceptionsFilter } from './all-exceptions.filter';
 import { AppModule } from './app.module';
 
 interface RoomConfig {
+  id: string;
   address: string;
-  clientType: 'LocalClient' | 'S3Client';
+  clientType: string;
 }
 
 interface ConfigClient {
+  getRoomConfigs(): Promise<RoomConfig[]>;
   getRoomConfig(roomId: string): Promise<RoomConfig>;
 }
 
-export async function bootstrap(configClient: ConfigClient) {
+async function bootstrap(configClient: ConfigClient) {
   const app = await NestFactory.create(AppModule.forRoot(configClient));
 
   app.useGlobalFilters(new AllExceptionsFilter());
   await app.listen(3000);
 }
 
-export { ConfigClient, RoomConfig };
+export { bootstrap, ConfigClient, RoomConfig };

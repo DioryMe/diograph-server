@@ -6,6 +6,12 @@ import { Response } from 'express';
 export class AppController {
   constructor(private readonly roomService: RoomService) {}
 
+  @Get('rooms')
+  async listRooms(@Res() res: Response) {
+    const response = await this.roomService.getRoomConfigs();
+    res.status(200).send(response);
+  }
+
   @Get('thumbnail')
   async renderThumbnail(
     @Res() res: Response,

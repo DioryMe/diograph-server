@@ -23,16 +23,21 @@ export class RoomService {
 
   async readContent(cid: string) {
     // TODO: Enable providing ROOM_PATH as part of the url
-    if (!process.env.ROOM_PATH) {
-      throw new Error(`Can't use /content endpoint if ROOM_PATH not defined!`);
-    }
+    // if (!process.env.ROOM_PATH) {
+    //   throw new Error(`Can't use /content endpoint if ROOM_PATH not defined!`);
+    // }
 
-    const address = process.env.ROOM_PATH;
-    const roomClientType = 'LocalClient';
+    // const address = process.env.ROOM_PATH;
+    // const roomClientType = 'LocalClient';
+
+    const roomId = 'room-2';
+
+    const { address, clientType } =
+      await this.configClient.getRoomConfig(roomId);
 
     const room = await constructAndLoadRoom(
       address,
-      roomClientType,
+      clientType,
       availableClients,
     );
     const response = await room.readContent(cid);
@@ -66,7 +71,7 @@ export class RoomService {
     // TODO: Where the roomId comes from?
     // => somehow from the url?
     // => /thumbnail/:roomId/:dioryId
-    const roomId = 'room-2';
+    const roomId = 'room-1';
 
     const { address, clientType } =
       await this.configClient.getRoomConfig(roomId);
@@ -80,5 +85,9 @@ export class RoomService {
     const response = await room.diograph.getDiory({ id: dioryId });
 
     return response.image;
+  }
+
+  async getRoomConfigs() {
+    return this.configClient.getRoomConfigs();
   }
 }
