@@ -20,6 +20,7 @@ async function bootstrap(configClient: ConfigClient) {
   await app.listen(3000);
 }
 
+/*
 const configClient: ConfigClient = {
   getRoomConfigs: async () => {
     return [
@@ -43,5 +44,6 @@ const configClient: ConfigClient = {
 };
 
 bootstrap(configClient);
+*/
 
 export { bootstrap, ConfigClient, RoomConfig };

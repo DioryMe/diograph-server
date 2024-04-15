@@ -21,11 +21,11 @@ Error without mime
     Should Be Equal As Strings    ${resp.text}    Missing "mime" query parameter
 
 Basic
-    ${resp}=    GET    ${ROOT}/room-1/content/    params=cid=bafkreig6w4bromttln6hqnw3f3kqfhm7pcfbbtsgezaxvh7a2ipqbelrxy&mime=image/jpeg
+    ${resp}=    GET    ${ROOT}/room-1/content/    params=cid=bafkreihvgvtqocownctpbskgrwsdtr3l6z3yp4w2rirs32ny2u7epz7ona&mime=image/jpeg
     Dictionary Should Contain Value    ${resp.headers}  image/jpeg
 
 Basic with another CID
-    ${resp}=    GET    ${ROOT}/room-1/content/   params=cid=bafkreiffnhnovdvo7o5bm4n2bvh3dax2wjlvlja3axhakakvvjfmoqxbhq&mime=application/pdf
+    ${resp}=    GET    ${ROOT}/room-1/content/   params=cid=bafkreihvgvtqocownctpbskgrwsdtr3l6z3yp4w2rirs32ny2u7epz7ona&mime=application/pdf
     Dictionary Should Contain Value    ${resp.headers}  application/pdf
 
 Error 404 when content not found
@@ -37,7 +37,7 @@ Error 404 when content not found
 #     Dictionary Should Contain Value    ${resp.headers}  image/jpeg
 
 Thumbnail
-    ${resp}=    GET    ${ROOT}/room-1/thumbnail/    params=dioryId=70caaa4d-1040-440a-a65f-e736f23f1cab
+    ${resp}=    GET    ${ROOT}/room-1/thumbnail/    params=dioryId=bafkreihkqxpj4iwdw32vshr47qjme3fm3alwnar6ltngwscypf4jtpff6q
     Dictionary Should Contain Value    ${resp.headers}  text/html; charset=utf-8
 
 Error 404 when thumbnail not found
