@@ -21,23 +21,18 @@ async function bootstrap(configClient: ConfigClient) {
 }
 
 if (process.env.DIOGRAPH_SERVER_STARTUP) {
+  const room1RoomConfig: RoomConfig = {
+    id: 'room-1',
+    address: '/tmp/demo-content/room-1',
+    clientType: 'LocalClient',
+  };
   const configClient: ConfigClient = {
     getRoomConfigs: async () => {
-      return [
-        {
-          id: 'room-1',
-          address: '/tmp',
-          clientType: 'LocalClient',
-        },
-      ];
+      return [room1RoomConfig];
     },
     getRoomConfig: async (roomId: string) => {
       const rooms = {
-        'room-1': {
-          id: 'room-1',
-          address: '/tmp',
-          clientType: 'LocalClient',
-        },
+        [room1RoomConfig.id]: room1RoomConfig,
       };
       return rooms[roomId];
     },
