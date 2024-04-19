@@ -35,28 +35,6 @@ export class RoomService {
     return response;
   }
 
-  async readContentFromS3(cid: string) {
-    // TODO: Enable providing BUCKET_NAME as part of the url
-    if (!process.env.BUCKET_NAME) {
-      throw new Error(`Can't use /s3 endpoint if BUCKET_NAME not defined!`);
-    }
-
-    const bucketAddress = `s3://${process.env.BUCKET_NAME}`;
-    const s3Address = `${bucketAddress}/room`;
-    const address = s3Address;
-    const roomClientType = 'S3Client';
-
-    const room = await constructAndLoadRoom(
-      address,
-      roomClientType,
-      availableClients,
-    );
-
-    const response = await room.readContent(cid);
-
-    return response;
-  }
-
   async getThumbnail(roomId: string, dioryId: string) {
     const { address, clientType } =
       await this.configClient.getRoomConfig(roomId);
