@@ -75,4 +75,17 @@ export class RoomService {
   async getRoomConfigs() {
     return this.configClient.getRoomConfigs();
   }
+
+  async getRoom(roomId: string) {
+    const { address, clientType } =
+      await this.configClient.getRoomConfig(roomId);
+
+    const room = await constructAndLoadRoom(
+      address,
+      clientType,
+      availableClients,
+    );
+
+    return room.toObject();
+  }
 }

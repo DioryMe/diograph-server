@@ -1,8 +1,8 @@
 import { Controller, Get, HttpStatus, Param, Query, Res } from '@nestjs/common';
 import { RoomService } from './room/room.service';
 import { Response } from 'express';
-import { roomsData } from './data';
-import { roomDiograph } from './data-diograph';
+// import { roomsData } from './data';
+// import { roomDiograph } from './data-diograph';
 
 @Controller()
 export class AppController {
@@ -16,12 +16,14 @@ export class AppController {
 
   @Get('rooms/:roomId')
   async getRoom(@Res() res: Response, @Param('roomId') roomId: string) {
+    const roomsData = await this.roomService.getRoom(roomId);
     res.status(200).send(roomsData);
   }
 
   @Get('rooms/:roomId/diograph')
   async getRoomDiograph(@Res() res: Response, @Param('roomId') roomId: string) {
-    res.status(200).send(roomDiograph);
+    const roomsData = await this.roomService.getRoom(roomId);
+    res.status(200).send(roomsData.diograph);
   }
 
   @Get(':roomId/thumbnail')
