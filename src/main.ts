@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AllExceptionsFilter } from './all-exceptions.filter';
 import { AppModule } from './app.module';
 import { RoomConfigData } from '@diograph/diograph/types';
-import { validateRoomConfigData } from '@diograph/diograph/validator';
+// import { validateRoomConfigData } from '@diograph/diograph/validator';
 
 interface ConfigClient {
   getRoomConfigs(): Promise<RoomConfigData[]>;
@@ -23,7 +23,7 @@ if (process.env.DIOGRAPH_SERVER_STARTUP) {
     address: '/tmp/demo-content/room-1',
     clientType: 'LocalClient',
   };
-  validateRoomConfigData(room1RoomConfig);
+  // validateRoomConfigData(room1RoomConfig);
 
   const configClient: ConfigClient = {
     getRoomConfigs: async () => {

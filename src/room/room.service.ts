@@ -1,3 +1,4 @@
+import { RoomObject } from '@diograph/diograph/types';
 import { LocalClient } from '@diograph/local-client';
 import { S3Client } from '@diograph/s3-client';
 import { constructAndLoadRoom } from '@diograph/utils';
@@ -54,7 +55,7 @@ export class RoomService {
     return this.configClient.getRoomConfigs();
   }
 
-  async getRoom(roomId: string) {
+  async getRoom(roomId: string): Promise<RoomObject> {
     const { address, clientType } =
       await this.configClient.getRoomConfig(roomId);
 
