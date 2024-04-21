@@ -1,16 +1,12 @@
 import { NestFactory } from '@nestjs/core';
 import { AllExceptionsFilter } from './all-exceptions.filter';
 import { AppModule } from './app.module';
-
-interface RoomConfig {
-  id: string;
-  address: string;
-  clientType: string;
-}
+import { RoomConfigData } from '@diograph/diograph/types';
+import { validateRoomConfigData } from '@diograph/diograph/validator';
 
 interface ConfigClient {
-  getRoomConfigs(): Promise<RoomConfig[]>;
-  getRoomConfig(roomId: string): Promise<RoomConfig>;
+  getRoomConfigs(): Promise<RoomConfigData[]>;
+  getRoomConfig(roomId: string): Promise<RoomConfigData>;
 }
 
 async function bootstrap(configClient: ConfigClient) {
@@ -22,11 +18,13 @@ async function bootstrap(configClient: ConfigClient) {
 }
 
 if (process.env.DIOGRAPH_SERVER_STARTUP) {
-  const room1RoomConfig: RoomConfig = {
+  const room1RoomConfig: RoomConfigData = {
     id: 'room-1',
     address: '/tmp/demo-content/room-1',
     clientType: 'LocalClient',
   };
+  validateRoomConfigData(room1RoomConfig);
+
   const configClient: ConfigClient = {
     getRoomConfigs: async () => {
       return [room1RoomConfig];
@@ -42,4 +40,4 @@ if (process.env.DIOGRAPH_SERVER_STARTUP) {
   bootstrap(configClient);
 }
 
-export { bootstrap, ConfigClient, RoomConfig };
+export { bootstrap, ConfigClient };
