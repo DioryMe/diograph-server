@@ -40,7 +40,7 @@ jobs:
       - name: Start server
         run: yarn start:dev & sleep 2
         env:
-          ROOM_PATH: ${{ vars.ROOM_PATH }}
+          DIOGRAPH_SERVER_STARTUP: 1
           BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
           BUCKET_ACCESS_KEY: ${{ secrets.BUCKET_ACCESS_KEY }}
           BUCKET_SECRET_KEY: ${{ secrets.BUCKET_SECRET_KEY }}

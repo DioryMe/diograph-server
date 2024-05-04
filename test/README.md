@@ -21,7 +21,7 @@ cp -r ./test/demo-content /tmp
 S3 test needs server to be started with access key & secret as envs:
 
 ```
-ROOM_PATH=/tmp/demo-content/room-1 BUCKET_NAME=****** BUCKET_ACCESS_KEY=****** BUCKET_SECRET_KEY=****** yarn start:dev
+DIOGRAPH_SERVER_STARTUP=1 BUCKET_NAME=****** BUCKET_ACCESS_KEY=****** BUCKET_SECRET_KEY=****** yarn start:dev
 ```
 
 4. Run tests

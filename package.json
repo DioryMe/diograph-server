@@ -1,10 +1,14 @@
 {
-  "name": "diograph-server",
-  "version": "0.0.1",
+  "name": "@diograph/diograph-server",
+  "version": "0.0.2-rc1",
   "description": "",
   "author": "",
-  "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
+  "main": "dist/main.js",
+  "types": "dist/main.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -20,7 +24,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@diograph/diograph": "next",
+    "@diograph/diograph": "0.2.3",
     "@diograph/local-client": "next",
     "@diograph/s3-client": "next",
     "@diograph/utils": "next",
@@ -51,7 +55,7 @@
     "ts-loader": "^9.4.3",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.1.3"
+    "typescript": "^5.4.2"
   },
   "jest": {
     "moduleFileExtensions": [
