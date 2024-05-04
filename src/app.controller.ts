@@ -1,8 +1,6 @@
 import { Controller, Get, HttpStatus, Param, Query, Res } from '@nestjs/common';
 import { RoomService } from './room/room.service';
 import { Response } from 'express';
-// import { roomsData } from './data';
-// import { roomDiograph } from './data-diograph';
 
 @Controller()
 export class AppController {
