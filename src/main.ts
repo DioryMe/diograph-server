@@ -12,7 +12,7 @@ interface ConfigClient {
 async function bootstrap(configClient: ConfigClient) {
   const app = await NestFactory.create(AppModule.forRoot(configClient));
 
-  app.enableCors({ origin: 'http://localhost:5173' });
+  app.enableCors({ origin: ['http://localhost:3300', 'http://localhost:5173'] });
   app.useGlobalFilters(new AllExceptionsFilter());
   await app.listen(3000);
 }
