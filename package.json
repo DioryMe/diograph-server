@@ -24,7 +24,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@diograph/diograph": "next",
+    "@diograph/diograph": "0.2.3",
     "@diograph/local-client": "next",
     "@diograph/s3-client": "next",
     "@diograph/utils": "next",

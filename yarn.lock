@@ -968,6 +968,17 @@
     path-browserify "^1.0.1"
     uuid "8.3.2"
 
+"@diograph/diograph@0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@diograph/diograph/-/diograph-0.2.3.tgz#64186e1e3403e813833dca2d4dda3119e0fa33c1"
+  integrity sha512-wADNWn/ex9QlPWeyilZVYmQ4GUdxOv1c0JPKe0hCE2nFXhw/ZPTJ1996ujIy63WfYSQWt7r9mozJkVQxJ6AQXQ==
+  dependencies:
+    "@types/path-browserify" "^1.0.0"
+    "@types/uuid" "8.3.2"
+    ajv "^8.12.0"
+    path-browserify "^1.0.1"
+    uuid "8.3.2"
+
 "@diograph/diograph@next":
   version "0.2.3-rc2"
   resolved "https://registry.yarnpkg.com/@diograph/diograph/-/diograph-0.2.3-rc2.tgz#a504a2cf5364ae94a569774c0b4b76f0df640ef2"
@@ -6009,6 +6020,7 @@ which@^2.0.1:
     isexe "^2.0.0"
 
 "wrap-ansi-cjs@npm:wrap-ansi@^7.0.0", wrap-ansi@^7.0.0:
+  name wrap-ansi-cjs
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
   integrity sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==
