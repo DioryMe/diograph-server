@@ -1,7 +1,7 @@
 import { RoomObject } from '@diograph/diograph/types';
 import { LocalClient } from '@diograph/local-client';
 import { S3Client } from '@diograph/s3-client';
-import { constructAndLoadRoom } from '@diograph/utils';
+import { constructAndLoadRoom } from '@diograph/diograph';
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigClient } from 'src/main';
 
