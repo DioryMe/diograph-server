@@ -2,6 +2,14 @@
 
 ## Run
 
+Start redis:
+
+```
+docker run --name redis-local -p 6379:6379 -d redis
+```
+
+Start server:
+
 ```
 DIOGRAPH_SERVER_STARTUP=1 yarn start:dev
 ```
