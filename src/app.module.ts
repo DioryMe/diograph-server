@@ -2,8 +2,11 @@ import { DynamicModule, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { RoomService } from './room/room.service';
 import { ConfigClient } from './main';
+import { ThrowawayController } from './throwaway/throwaway.controller';
 
-@Module({})
+@Module({
+  controllers: [ThrowawayController]
+})
 export class AppModule {
   static forRoot(configClient: ConfigClient): DynamicModule {
     return {
