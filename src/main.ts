@@ -12,9 +12,12 @@ interface ConfigClient {
 async function bootstrap(configClient: ConfigClient) {
   const app = await NestFactory.create(AppModule.forRoot(configClient));
 
-  app.enableCors({ origin: ['http://localhost:3300', 'http://localhost:5173'] });
+  app.enableCors({
+    origin: ['http://localhost:3300', 'http://localhost:5173'],
+  });
   app.useGlobalFilters(new AllExceptionsFilter());
-  await app.listen(3000);
+  const port = process.env.PORT || 3000;
+  await app.listen(port);
 }
 
 if (process.env.DIOGRAPH_SERVER_STARTUP) {
