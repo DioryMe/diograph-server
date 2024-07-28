@@ -9,14 +9,13 @@ import {
 } from '@nestjs/common';
 import { Redis } from 'ioredis';
 
-import { S3Client, ListObjectsV2Command } from '@aws-sdk/client-s3';
 import {
   CognitoIdentityClient,
   GetIdCommand,
   GetCredentialsForIdentityCommand,
 } from '@aws-sdk/client-cognito-identity';
 
-const getCredentials = async (accessToken, identityToken) => {
+const getCredentials = async (identityToken) => {
   const cognitoIdentityClient = new CognitoIdentityClient({
     region: 'eu-north-1',
   });
@@ -55,35 +54,21 @@ export class ThrowawayController {
   constructor(@Inject('REDIS_CLIENT') private readonly redisClient: Redis) {}
 
   @Get('callback')
-  // @Redirect('http://localhost:5173')
+  @Redirect('http://localhost:5173')
   async callbackAction(
     @Query() query: Record<string, string>,
-    // @Session() session: Record<string, any>,
+    @Session() session: Record<string, any>,
   ) {
     const date = new Date().toISOString();
     await this.redisClient.set('date', date);
 
-    const credentials = await getCredentials(query.token, query.id_token);
+    const credentials = await getCredentials(query.token);
 
-    const options = {
-      region: 'eu-west-1',
-      credentials: {
-        accessKeyId: credentials.AccessKeyId,
-        secretAccessKey: credentials.SecretKey,
-        sessionToken: credentials.SessionToken,
-      },
+    session.awsCredentials = {
+      accessKeyId: credentials.AccessKeyId,
+      secretAccessKey: credentials.SecretKey,
+      sessionToken: credentials.SessionToken,
     };
-
-    const s3Client = new S3Client(options);
-
-    const listCommand = new ListObjectsV2Command({
-      Bucket: 'jvalanen-diory-test3',
-      Prefix: 'room/',
-    });
-
-    const list = await s3Client.send(listCommand);
-
-    return 'jee' + JSON.stringify(list);
   }
 
   @Get('test')
