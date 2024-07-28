@@ -3,6 +3,9 @@ import { AllExceptionsFilter } from './all-exceptions.filter';
 import { AppModule } from './app.module';
 import { RoomConfigData } from '@diograph/diograph/types';
 import { validateRoomConfigData } from '@diograph/diograph/validator';
+import { redisClientFactory } from './redisClientFactory';
+import RedisStore from 'connect-redis';
+import * as session from 'express-session';
 
 interface ConfigClient {
   getRoomConfigs(): Promise<RoomConfigData[]>;
@@ -14,8 +17,26 @@ async function bootstrap(configClient: ConfigClient) {
 
   app.enableCors({
     origin: ['http://localhost:3300', 'http://localhost:5173'],
+    credentials: true,
   });
   app.useGlobalFilters(new AllExceptionsFilter());
+
+  // Initialise session-store with Redis
+  const redisClient = redisClientFactory();
+  const redisStore = new RedisStore({
+    client: redisClient,
+    prefix: 'diograph-server-session:',
+  });
+
+  app.use(
+    session({
+      store: redisStore,
+      resave: true, // Resave on every request so the session will be refreshed
+      saveUninitialized: false, // Don't save session before successful login
+      secret: 'cf1d48728bd23c', // TODO: Move to .env
+    }),
+  );
+
   const port = process.env.PORT || 3000;
   await app.listen(port);
 }
