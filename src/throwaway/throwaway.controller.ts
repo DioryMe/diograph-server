@@ -8,6 +8,7 @@ import {
   Session,
 } from '@nestjs/common';
 import { Redis } from 'ioredis';
+import { S3Client, ListObjectsV2Command } from '@aws-sdk/client-s3';
 
 import {
   CognitoIdentityClient,
@@ -73,9 +74,25 @@ export class ThrowawayController {
 
   @Get('test')
   async testAction(@Session() session: Record<string, string>) {
-    const date = await this.redisClient.get('date');
+    // const date = await this.redisClient.get('date');
 
-    return 'This is test ' + date + '<br>' + session.token;
+    const options = {
+      region: 'eu-west-1',
+      credentials: JSON.parse(
+        JSON.stringify(session.awsCredentials).replace(/\\/g, ''),
+      ),
+    };
+
+    const s3Client = new S3Client(options);
+
+    const listCommand = new ListObjectsV2Command({
+      Bucket: 'jvalanen-diory-test3',
+      Prefix: 'room/',
+    });
+
+    const list = await s3Client.send(listCommand);
+
+    return JSON.stringify(list);
   }
 
   // TODO: Convert to POST
