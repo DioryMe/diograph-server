@@ -37,13 +37,7 @@ export class AppController {
     @Param('roomId') roomId: string,
     @Session() session: Record<string, any>,
   ) {
-    const response = await this.redisClient.get(
-      `${session.userId}-rooms-${roomId}`,
-    );
-    const roomConfig =
-      response === 'native'
-        ? this.getNativeConfig(roomId, session)
-        : JSON.parse(response);
+    const roomConfig = await this.getRoomConfig(roomId, session);
 
     const roomsData = await this.roomService.getRoom(roomId, roomConfig);
     res.status(200).send(roomsData.diograph.diograph);
@@ -54,6 +48,7 @@ export class AppController {
     @Res() res: Response,
     @Param('roomId') roomId: string,
     @Query('dioryId') dioryId: string,
+    @Session() session: Record<string, any>,
   ) {
     if (!dioryId) {
       return res
@@ -61,7 +56,13 @@ export class AppController {
         .send('Missing "dioryId" query parameter');
     }
 
-    const response = await this.roomService.getThumbnail(roomId, dioryId);
+    const roomConfig = await this.getRoomConfig(roomId, session);
+
+    const response = await this.roomService.getThumbnail(
+      roomId,
+      dioryId,
+      roomConfig,
+    );
 
     const html = `<img src="${response}">`;
     res.status(200).header('Content-Type', 'text/html').send(html);
@@ -89,6 +90,18 @@ export class AppController {
 
     res.status(200).header('Content-Type', mime).send(Buffer.from(response));
   }
+
+  getRoomConfig = async (roomId, session: any) => {
+    const response = await this.redisClient.get(
+      `${session.userId}-rooms-${roomId}`,
+    );
+    const roomConfig =
+      response === 'native'
+        ? this.getNativeConfig(roomId, session)
+        : JSON.parse(response);
+
+    return roomConfig;
+  };
 
   getNativeConfig = (roomId: string, session: any) => {
     return {

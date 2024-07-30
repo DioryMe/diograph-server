@@ -35,15 +35,12 @@ export class RoomService {
     return response;
   }
 
-  async getThumbnail(roomId: string, dioryId: string) {
-    const { address, clientType } =
-      await this.configClient.getRoomConfig(roomId);
+  async getThumbnail(roomId: string, dioryId: string, roomConfig?: any) {
+    // await this.configClient.getRoomConfig(roomId);
+    const { address, clientType, clients } =
+      await this.getRoomConnectionParams(roomConfig);
 
-    const room = await constructAndLoadRoom(
-      address,
-      clientType,
-      availableClients,
-    );
+    const room = await constructAndLoadRoom(address, clientType, clients);
 
     const response = await room.diograph.getDiory({ id: dioryId });
 
@@ -55,9 +52,17 @@ export class RoomService {
   }
 
   async getRoom(roomId: string, roomConfig?: any): Promise<Room> {
-    const { address, clientType, credentials } = roomConfig;
-    //   await this.configClient.getRoomConfig(roomId);
+    // await this.configClient.getRoomConfig(roomId);
+    const { address, clientType, clients } =
+      await this.getRoomConnectionParams(roomConfig);
 
+    const room = await constructAndLoadRoom(address, clientType, clients);
+
+    return room;
+  }
+
+  async getRoomConnectionParams(roomConfig: any) {
+    const { address, clientType, credentials } = roomConfig;
     const credentialsWithRegion = {
       region: 'eu-west-1',
       credentials: {
@@ -67,7 +72,7 @@ export class RoomService {
       },
     };
 
-    const availableClients123 = {
+    const clients = {
       LocalClient: { clientConstructor: LocalClient },
       S3Client: {
         clientConstructor: S3Client,
@@ -75,12 +80,6 @@ export class RoomService {
       },
     };
 
-    const room = await constructAndLoadRoom(
-      address,
-      clientType,
-      availableClients123,
-    );
-
-    return room;
+    return { address, clientType, clients };
   }
 }
