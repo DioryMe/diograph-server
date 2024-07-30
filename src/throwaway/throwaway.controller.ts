@@ -47,7 +47,7 @@ const getCredentials = async (identityToken) => {
   );
   const credentials = credentialsResponse.Credentials;
 
-  return credentials;
+  return { credentials, identityId };
 };
 
 @Controller('throwaway')
@@ -60,27 +60,22 @@ export class ThrowawayController {
     @Query() query: Record<string, string>,
     @Session() session: Record<string, any>,
   ) {
-    const date = new Date().toISOString();
-    await this.redisClient.set('date', date);
+    const { credentials, identityId } = await getCredentials(query.token);
 
-    const credentials = await getCredentials(query.token);
-
-    session.awsCredentials = {
+    session.awsCredentials = JSON.stringify({
       accessKeyId: credentials.AccessKeyId,
       secretAccessKey: credentials.SecretKey,
       sessionToken: credentials.SessionToken,
-    };
+    });
+
+    session.userId = identityId;
   }
 
   @Get('test')
   async testAction(@Session() session: Record<string, string>) {
-    // const date = await this.redisClient.get('date');
-
     const options = {
       region: 'eu-west-1',
-      credentials: JSON.parse(
-        JSON.stringify(session.awsCredentials).replace(/\\/g, ''),
-      ),
+      credentials: JSON.parse(session.awsCredentials),
     };
 
     const s3Client = new S3Client(options);
@@ -93,6 +88,15 @@ export class ThrowawayController {
     const list = await s3Client.send(listCommand);
 
     return JSON.stringify(list);
+  }
+
+  @Get('rooms')
+  async roomsAction(@Session() session: Record<string, string>) {
+    const response = await this.redisClient.keys(`${session.userId}-rooms-*`);
+    return response.map((key) => key.replace(`${session.userId}-rooms-`, ''));
+    // const secondResource = await this.redisClient.get(response[0]);
+    // const second = JSON.parse(secondResource).credentials.accessKeyId;
+    // return response[0] + ' ' + second;
   }
 
   // TODO: Convert to POST
