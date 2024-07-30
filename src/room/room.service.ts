@@ -4,32 +4,20 @@ import { constructAndLoadRoom, Room } from '@diograph/diograph';
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigClient } from 'src/main';
 
-const credentials = {
-  region: 'eu-west-1',
-  credentials: {
-    accessKeyId: process.env.BUCKET_ACCESS_KEY,
-    secretAccessKey: process.env.BUCKET_SECRET_KEY,
-  },
-};
-
-const availableClients = {
-  LocalClient: { clientConstructor: LocalClient },
-  S3Client: { clientConstructor: S3Client, credentials },
-};
-
 @Injectable()
 export class RoomService {
   constructor(@Inject('CONFIG_CLIENT') private configClient: ConfigClient) {}
 
-  async readContent(roomId: string, cid: string) {
-    const { address, clientType } =
-      await this.configClient.getRoomConfig(roomId);
+  async getRoomConfigs() {
+    return this.configClient.getRoomConfigs();
+  }
 
-    const room = await constructAndLoadRoom(
-      address,
-      clientType,
-      availableClients,
-    );
+  async readContent(roomId: string, cid: string, roomConfig?: any) {
+    // await this.configClient.getRoomConfig(roomId);
+    const { address, clientType, clients } =
+      await this.getRoomConnectionParams(roomConfig);
+
+    const room = await constructAndLoadRoom(address, clientType, clients);
     const response = await room.readContent(cid);
 
     return response;
@@ -45,10 +33,6 @@ export class RoomService {
     const response = await room.diograph.getDiory({ id: dioryId });
 
     return response.image;
-  }
-
-  async getRoomConfigs() {
-    return this.configClient.getRoomConfigs();
   }
 
   async getRoom(roomId: string, roomConfig?: any): Promise<Room> {

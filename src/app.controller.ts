@@ -74,6 +74,7 @@ export class AppController {
     @Param('roomId') roomId: string,
     @Query('cid') cid: string,
     @Query('mime') mime: string,
+    @Session() session: Record<string, any>,
   ) {
     if (!cid) {
       return res
@@ -86,7 +87,13 @@ export class AppController {
         .send('Missing "mime" query parameter');
     }
 
-    const response = await this.roomService.readContent(roomId, cid);
+    const roomConfig = await this.getRoomConfig(roomId, session);
+
+    const response = await this.roomService.readContent(
+      roomId,
+      cid,
+      roomConfig,
+    );
 
     res.status(200).header('Content-Type', mime).send(Buffer.from(response));
   }
