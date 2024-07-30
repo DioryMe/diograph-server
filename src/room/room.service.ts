@@ -4,6 +4,7 @@ import { S3Client } from '@diograph/s3-client';
 import { constructAndLoadRoom } from '@diograph/diograph';
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigClient } from 'src/main';
+import { Redis } from 'ioredis';
 
 const credentials = {
   region: 'eu-west-1',
@@ -20,7 +21,10 @@ const availableClients = {
 
 @Injectable()
 export class RoomService {
-  constructor(@Inject('CONFIG_CLIENT') private configClient: ConfigClient) {}
+  constructor(
+    @Inject('CONFIG_CLIENT') private configClient: ConfigClient,
+    @Inject('REDIS_CLIENT') private readonly redisClient: Redis,
+  ) {}
 
   async readContent(roomId: string, cid: string) {
     const { address, clientType } =
@@ -55,16 +59,37 @@ export class RoomService {
     return this.configClient.getRoomConfigs();
   }
 
-  async getRoom(roomId: string): Promise<RoomObject> {
-    const { address, clientType } =
-      await this.configClient.getRoomConfig(roomId);
+  async getRoom(roomId: string, userId?: string): Promise<RoomObject> {
+    // const { address, clientType } =
+    //   await this.configClient.getRoomConfig(roomId);
+
+    const response = await this.redisClient.get(`${userId}-rooms-${roomId}`);
+    const { address, clientType, credentials } =
+      response === 'native' ? this.getNativeConfig() : JSON.parse(response);
+
+    throw new Error(JSON.stringify(credentials));
+
+    const availableClients123 = {
+      LocalClient: { clientConstructor: LocalClient },
+      S3Client: { clientConstructor: S3Client, credentials },
+    };
 
     const room = await constructAndLoadRoom(
       address,
       clientType,
-      availableClients,
+      availableClients123,
     );
 
     return room.toObject();
   }
+
+  getNativeConfig = () => {
+    return {
+      address: 'http://localhost:5173',
+      clientType: 'LocalClient',
+      credentials: {
+        accessKeyId: '123',
+      },
+    };
+  };
 }

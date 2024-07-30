@@ -1,4 +1,12 @@
-import { Controller, Get, HttpStatus, Param, Query, Res } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpStatus,
+  Param,
+  Query,
+  Res,
+  Session,
+} from '@nestjs/common';
 import { RoomService } from './room/room.service';
 import { Response } from 'express';
 
@@ -19,8 +27,12 @@ export class AppController {
   }
 
   @Get('rooms/:roomId/diograph')
-  async getRoomDiograph(@Res() res: Response, @Param('roomId') roomId: string) {
-    const roomsData = await this.roomService.getRoom(roomId);
+  async getRoomDiograph(
+    @Res() res: Response,
+    @Param('roomId') roomId: string,
+    @Session() session: Record<string, any>,
+  ) {
+    const roomsData = await this.roomService.getRoom(roomId, session.userId);
     res.status(200).send(roomsData.diograph);
   }
 
