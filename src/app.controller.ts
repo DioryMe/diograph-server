@@ -28,7 +28,7 @@ export class AppController {
   @Get('rooms/:roomId')
   async getRoom(@Res() res: Response, @Param('roomId') roomId: string) {
     const roomsData = await this.roomService.getRoom(roomId);
-    res.status(200).send(roomsData);
+    res.status(200).send(roomsData.toObject());
   }
 
   @Get('rooms/:roomId/diograph')
@@ -46,7 +46,7 @@ export class AppController {
         : JSON.parse(response);
 
     const roomsData = await this.roomService.getRoom(roomId, roomConfig);
-    res.status(200).send(roomsData.diograph);
+    res.status(200).send(roomsData.diograph.diograph);
   }
 
   @Get(':roomId/thumbnail')
@@ -94,7 +94,7 @@ export class AppController {
     return {
       address: `s3://jvalanen-diory-test3/${session.userId}/${roomId}`,
       clientType: 'S3Client',
-      credentials: session.awsCredentials,
+      credentials: JSON.parse(session.awsCredentials),
     };
   };
 }

@@ -1,7 +1,6 @@
-import { RoomObject } from '@diograph/diograph/types';
 import { LocalClient } from '@diograph/local-client';
 import { S3Client } from '@diograph/s3-client';
-import { constructAndLoadRoom } from '@diograph/diograph';
+import { constructAndLoadRoom, Room } from '@diograph/diograph';
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigClient } from 'src/main';
 
@@ -55,7 +54,7 @@ export class RoomService {
     return this.configClient.getRoomConfigs();
   }
 
-  async getRoom(roomId: string, roomConfig?: any): Promise<RoomObject> {
+  async getRoom(roomId: string, roomConfig?: any): Promise<Room> {
     const { address, clientType, credentials } = roomConfig;
     //   await this.configClient.getRoomConfig(roomId);
 
@@ -64,12 +63,16 @@ export class RoomService {
       credentials: {
         accessKeyId: credentials.accessKeyId,
         secretAccessKey: credentials.secretAccessKey,
+        sessionToken: credentials.sessionToken,
       },
     };
 
     const availableClients123 = {
       LocalClient: { clientConstructor: LocalClient },
-      S3Client: { clientConstructor: S3Client, credentialsWithRegion },
+      S3Client: {
+        clientConstructor: S3Client,
+        credentials: credentialsWithRegion,
+      },
     };
 
     const room = await constructAndLoadRoom(
@@ -78,6 +81,6 @@ export class RoomService {
       availableClients123,
     );
 
-    return room.toObject();
+    return room;
   }
 }
