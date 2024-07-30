@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   HttpStatus,
+  Inject,
   Param,
   Query,
   Res,
@@ -9,10 +10,14 @@ import {
 } from '@nestjs/common';
 import { RoomService } from './room/room.service';
 import { Response } from 'express';
+import { Redis } from 'ioredis';
 
 @Controller()
 export class AppController {
-  constructor(private readonly roomService: RoomService) {}
+  constructor(
+    private readonly roomService: RoomService,
+    @Inject('REDIS_CLIENT') private readonly redisClient: Redis,
+  ) {}
 
   @Get('rooms')
   async listRooms(@Res() res: Response) {
@@ -32,7 +37,15 @@ export class AppController {
     @Param('roomId') roomId: string,
     @Session() session: Record<string, any>,
   ) {
-    const roomsData = await this.roomService.getRoom(roomId, session.userId);
+    const response = await this.redisClient.get(
+      `${session.userId}-rooms-${roomId}`,
+    );
+    const roomConfig =
+      response === 'native'
+        ? this.getNativeConfig(roomId, session)
+        : JSON.parse(response);
+
+    const roomsData = await this.roomService.getRoom(roomId, roomConfig);
     res.status(200).send(roomsData.diograph);
   }
 
@@ -76,4 +89,12 @@ export class AppController {
 
     res.status(200).header('Content-Type', mime).send(Buffer.from(response));
   }
+
+  getNativeConfig = (roomId: string, session: any) => {
+    return {
+      address: `s3://jvalanen-diory-test3/${session.userId}/${roomId}`,
+      clientType: 'S3Client',
+      credentials: session.awsCredentials,
+    };
+  };
 }
